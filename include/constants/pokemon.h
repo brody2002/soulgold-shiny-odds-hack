@@ -102,7 +102,7 @@ enum __attribute__((packed)) Stat
 
 // Shiny odds
 #define SHINY_ODDS 512 // playtest odds. Actual probability is SHINY_ODDS/65536.
-#define RELEASE_SHINY_ODDS 256
+#define RELEASE_SHINY_ODDS 6554 // Closest 16-bit threshold to 10%: 6554/65536 = 10.0006%.
 
 // Ribbon IDs used by TV and Pokénav
 #define CHAMPION_RIBBON       0
