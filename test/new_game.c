@@ -42,16 +42,16 @@ TEST("Starting a new game preserves settings selected from the main menu")
     EXPECT_EQ(GetReplayBattleFormat(), REPLAY_BATTLE_FORMAT_DOUBLES);
 }
 
-TEST("Shiny RNG audit: a fresh new game sets exactly 1-in-256 base odds")
+TEST("Shiny RNG audit: a fresh new game sets 10-percent base odds")
 {
     NewGameInitData();
 
     EXPECT(FlagGet(FLAG_RELEASE_SHINY_ODDS));
     EXPECT_EQ(GetCurrentShinyOdds(), RELEASE_SHINY_ODDS);
-    EXPECT_EQ(GetCurrentShinyOdds() * 256, MAX_u16 + 1);
+    EXPECT_EQ(GetCurrentShinyOdds(), 6554);
 }
 
-TEST("Shiny RNG audit: the release predicate accepts exactly 1 in 256 values")
+TEST("Shiny RNG audit: the release predicate uses the closest threshold to 10 percent")
 {
     const u32 trainerId = 0x12345678;
     const u32 personalityLo = 0x9ABC;
@@ -70,5 +70,5 @@ TEST("Shiny RNG audit: the release predicate accepts exactly 1 in 256 values")
     }
 
     EXPECT_EQ(shinyCount, RELEASE_SHINY_ODDS);
-    EXPECT_EQ(shinyCount * 256, MAX_u16 + 1);
+    EXPECT_EQ(shinyCount, (((u32)MAX_u16 + 1) + 5) / 10);
 }

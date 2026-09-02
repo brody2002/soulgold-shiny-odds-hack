@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "palette-editor": "node tools/palette-editor/server.mjs",
+    "test:palette-editor": "node --test tools/palette-editor/*.test.mjs"
+  },
   "devDependencies": {
     "playwright": "^1.60.0"
   }

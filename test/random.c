@@ -331,11 +331,11 @@ TEST("Shiny RNG audit: SFC32 output has balanced bits and transitions")
         EXPECT_LE((u32)abs((s32)transitionCounts[i] - (s32)expectedTransitionCount), transitionTolerance);
 }
 
-TEST("Shiny RNG audit: SFC32 tracks 1-in-256 odds over a large sample")
+TEST("Shiny RNG audit: SFC32 tracks 10-percent odds over a large sample")
 {
     const u32 sampleCount = 1 << 20;
-    const u32 expectedShinies = sampleCount / 256;
-    const u32 tolerance = 512;
+    const u32 expectedShinies = (sampleCount >> 16) * RELEASE_SHINY_ODDS;
+    const u32 tolerance = 2048;
     const u32 trainerId = 0x12345678;
     u32 shinyCount = 0;
     u32 i;

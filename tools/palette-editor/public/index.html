@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pokémon Palette Lab</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script>
+        if (window.location.protocol === "file:")
+            document.documentElement.classList.add("file-mode");
+    </script>
+</head>
+<body>
+    <aside id="protocol-warning" class="protocol-warning" hidden>
+        <p class="eyebrow">Local server required</p>
+        <h2>Don’t open this HTML file directly</h2>
+        <p>From the repository root, run <code>npm run palette-editor</code>, then use the localhost address below.</p>
+        <a class="button button-primary" href="http://127.0.0.1:4173/">Open http://127.0.0.1:4173</a>
+    </aside>
+    <main class="app-shell">
+        <header class="app-header">
+            <div>
+                <p class="eyebrow">SoulGold graphics tool</p>
+                <h1>Pokémon Palette Lab</h1>
+                <p class="subtitle">Drop JASC <code>.pal</code> files to find their sprites, edit indexed colors, and preview every change live.</p>
+            </div>
+            <div class="header-actions">
+                <span id="change-count" class="change-count">No unsaved changes</span>
+                <button id="save-all" class="button button-primary" type="button" disabled>Save all</button>
+            </div>
+        </header>
+
+        <section id="drop-zone" class="drop-zone" aria-label="Drop palette files here" title="Click to choose palette files">
+            <input id="file-input" type="file" accept=".pal" multiple hidden>
+            <div class="drop-icon" aria-hidden="true">＋</div>
+            <div>
+                <strong>Drop one or more <code>.pal</code> files</strong>
+                <p>Files are matched against <code>graphics/pokemon</code>. You can also <button id="browse-files" class="text-button" type="button">browse for files</button>.</p>
+            </div>
+        </section>
+
+        <div id="notices" class="notices" aria-live="polite"></div>
+
+        <section class="scroll-region" aria-label="Open palette editors">
+            <div id="empty-state" class="empty-state">
+                <p>Drag a palette here to begin.</p>
+                <span>The associated icon, overworld, or battle sprites will appear beside its 16-color palette.</span>
+            </div>
+            <div id="palette-list" class="palette-list"></div>
+        </section>
+    </main>
+    <script>
+        if (window.location.protocol === "file:") {
+            document.querySelector("#protocol-warning").hidden = false;
+        } else {
+            const appScript = document.createElement("script");
+            appScript.type = "module";
+            appScript.src = "./app.js";
+            document.body.append(appScript);
+        }
+    </script>
+</body>
+</html>
