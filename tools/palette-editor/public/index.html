@@ -22,7 +22,7 @@
             <div>
                 <p class="eyebrow">SoulGold graphics tool</p>
                 <h1>Pokémon Palette Lab</h1>
-                <p class="subtitle">Drop JASC <code>.pal</code> files to find their sprites, edit indexed colors, and preview every change live.</p>
+                <p class="subtitle">Drop matching JASC <code>.pal</code> and indexed <code>.png</code> files, edit their colors, and preview every change live.</p>
             </div>
             <div class="header-actions">
                 <span id="change-count" class="change-count">No unsaved changes</span>
@@ -30,12 +30,12 @@
             </div>
         </header>
 
-        <section id="drop-zone" class="drop-zone" aria-label="Drop palette files here" title="Click to choose palette files">
-            <input id="file-input" type="file" accept=".pal" multiple hidden>
+        <section id="drop-zone" class="drop-zone" aria-label="Drop matching palette and PNG files here" title="Click to choose palette and PNG files">
+            <input id="file-input" type="file" accept=".pal,.png" multiple hidden>
             <div class="drop-icon" aria-hidden="true">＋</div>
             <div>
-                <strong>Drop one or more <code>.pal</code> files</strong>
-                <p>Files are matched against <code>graphics/pokemon</code>. You can also <button id="browse-files" class="text-button" type="button">browse for files</button>.</p>
+                <strong>Drop a <code>.pal</code> and same-name <code>.png</code></strong>
+                <p>For example, <code>lugia.pal</code> pairs with <code>lugia.png</code> from any folder. You can also <button id="browse-files" class="text-button" type="button">browse for files</button>.</p>
             </div>
         </section>
 
@@ -43,8 +43,8 @@
 
         <section class="scroll-region" aria-label="Open palette editors">
             <div id="empty-state" class="empty-state">
-                <p>Drag a palette here to begin.</p>
-                <span>The associated icon, overworld, or battle sprites will appear beside its 16-color palette.</span>
+                <p>Drag a matching palette and PNG here to begin.</p>
+                <span>The PNG will appear beside its indexed palette, wherever the two files are stored.</span>
             </div>
             <div id="palette-list" class="palette-list"></div>
         </section>

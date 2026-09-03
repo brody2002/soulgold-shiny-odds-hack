@@ -8,6 +8,8 @@ import {
     readPngDimensions,
     serializeJascPalette,
 } from "./palette.mjs";
+import { groupPaletteSpriteFiles } from "./public/palette-files.mjs";
+import { hsvToRgb, rgbToHsv } from "./public/color-utils.mjs";
 import { repoRoot } from "./server.mjs";
 
 const infernapeDirectory = path.join(repoRoot, "graphics/pokemon/infernape");
@@ -30,6 +32,48 @@ test("JASC parser rejects missing and out-of-range colors", () => {
         () => parseJascPalette("JASC-PAL\n0100\n1\n256 0 0\n"),
         /Color 0/,
     );
+});
+
+test("dropped palettes pair with same-basename PNGs regardless of path", () => {
+    const palette = { name: "Custom Sprite.pal", path: "/tmp/somewhere/Custom Sprite.pal" };
+    const png = { name: "custom sprite.PNG", path: "/another/place/custom sprite.PNG" };
+    const otherPalette = { name: "repository-only.pal" };
+    const otherPng = { name: "orphan.png" };
+
+    const grouped = groupPaletteSpriteFiles([palette, png, otherPalette, otherPng]);
+
+    assert.equal(grouped.pairs.length, 1);
+    assert.equal(grouped.pairs[0].palette, palette);
+    assert.equal(grouped.pairs[0].png, png);
+    assert.deepEqual(grouped.unmatchedPalettes, [otherPalette]);
+    assert.deepEqual(grouped.unmatchedPngs, [otherPng]);
+    assert.deepEqual(grouped.ambiguous, []);
+});
+
+test("duplicate dropped basenames are reported as ambiguous", () => {
+    const grouped = groupPaletteSpriteFiles([
+        { name: "sprite.pal" },
+        { name: "SPRITE.pal" },
+        { name: "sprite.png" },
+    ]);
+
+    assert.equal(grouped.pairs.length, 0);
+    assert.equal(grouped.ambiguous.length, 1);
+    assert.equal(grouped.ambiguous[0].palettes.length, 2);
+});
+
+test("custom color picker conversions preserve RGB colors", () => {
+    const colors = [
+        [0, 0, 0],
+        [255, 255, 255],
+        [255, 0, 0],
+        [0, 255, 0],
+        [0, 0, 255],
+        [37, 142, 219],
+    ];
+
+    for (const color of colors)
+        assert.deepEqual(hsvToRgb(rgbToHsv(color)), color);
 });
 
 test("palette naming conventions map to the intended Infernape sprites", async () => {
